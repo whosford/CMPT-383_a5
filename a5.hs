@@ -88,8 +88,41 @@ count_bits xs t | null xs                = t
 bit_count :: [Int] -> (Int, Int)
 bit_count xs = count_bits xs (0,0)
 
+add_bit :: [[Int]] -> [[Int]]
+add_bit seqs = [b : seq | seq <- seqs, b <- [0,1]]
+
+
 all_bit_seqs :: Int -> [[Int]]
 all_bit_seqs n | n < 1     = []
                | n == 1    = [[0], [1]]
                | otherwise = add_bit (all_bit_seqs (n - 1))
-               		where add_bit seqs = [b : seq | seq <- seqs, b <- [0,1]]
+
+bin_seqs_2 :: Int -> [[Int]]
+bin_seqs_2 n = sequence (replicate n [0, 1])
+
+data Bit = Zero | One
+    deriving (Show, Eq)
+
+flipBit :: Bit -> Bit
+flipBit x | x == Zero = One
+          | otherwise = Zero
+
+invert :: [Bit] -> [Bit]
+invert xs = [(flipBit x) | x <- xs]
+
+all_bit_seqs2 :: Int -> [[Bit]]
+all_bit_seqs2 n = sequence (replicate n [Zero, One])
+
+bitVal1 :: Bit -> Int
+bitVal1 x | x == Zero = 0
+          | otherwise = 1
+
+bitSum1 :: [Bit] -> Int
+bitSum1 xs = sum (map bitVal1 xs)
+
+bitVal2 :: Maybe Bit -> Int
+bitVal2 x | x == Just One = 1
+          | otherwise     = 0
+
+bitSum2 :: [Maybe Bit] -> Int
+bitSum2 xs = sum (map bitVal2 xs)

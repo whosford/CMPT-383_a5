@@ -126,3 +126,30 @@ bitVal2 x | x == Just One = 1
 
 bitSum2 :: [Maybe Bit] -> Int
 bitSum2 xs = sum (map bitVal2 xs)
+
+data List a = Empty | Cons a (List a)
+    deriving Show
+
+toList :: [a] -> List a
+toList []     = Empty
+toList (x:xs) = Cons x (toList xs)
+
+toHaskellList :: List a -> [a]
+toHaskellList Empty      = []
+toHaskellList (Cons h r) = h : (toHaskellList r)
+
+append :: List a -> List a -> List a
+append Empty (Cons h r) = Cons h r
+append (Cons h1 r1) (Cons h2 r2) = Cons h1 (append r1 (Cons h2 r2))
+
+removeAll :: (a -> Bool) -> List a -> List a
+removeAll f Empty                  = Empty
+removeAll f (Cons h r) | f h       = removeAll f r
+                       | otherwise = Cons h (removeAll f r)
+
+sort :: Ord a => List a -> List a
+sort Empty      = Empty
+sort (Cons h r) = append smalls (Cons h bigs)
+                	where 
+                		smalls = sort (removeAll (\x -> x > h) r)
+                		bigs   = sort (removeAll (\x -> x <= h) r)                    

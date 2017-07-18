@@ -88,17 +88,8 @@ count_bits xs t | null xs                = t
 bit_count :: [Int] -> (Int, Int)
 bit_count xs = count_bits xs (0,0)
 
-add_bit :: [[Int]] -> [[Int]]
-add_bit seqs = [b : seq | seq <- seqs, b <- [0,1]]
-
-
-all_bit_seqs :: Int -> [[Int]]
-all_bit_seqs n | n < 1     = []
-               | n == 1    = [[0], [1]]
-               | otherwise = add_bit (all_bit_seqs (n - 1))
-
-bin_seqs_2 :: Int -> [[Int]]
-bin_seqs_2 n = sequence (replicate n [0, 1])
+all_basic_bit_seqs :: Int -> [[Int]]
+all_basic_bit_seqs n = sequence (replicate n [0, 1])
 
 data Bit = Zero | One
     deriving (Show, Eq)
@@ -110,8 +101,8 @@ flipBit x | x == Zero = One
 invert :: [Bit] -> [Bit]
 invert xs = [(flipBit x) | x <- xs]
 
-all_bit_seqs2 :: Int -> [[Bit]]
-all_bit_seqs2 n = sequence (replicate n [Zero, One])
+all_bit_seqs :: Int -> [[Bit]]
+all_bit_seqs n = sequence (replicate n [Zero, One])
 
 bitVal1 :: Bit -> Int
 bitVal1 x | x == Zero = 0
